@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology Class Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #f3f4f6, #e3f2fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      z-index: 2;
+      text-align: center;
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 360px;
+      max-width: 90vw;
+    }
+
+    .container img {
+      height: 70px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 16px;
+      margin: 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      text-align: center;
+    }
+
+    .button i {
+      font-size: 18px;
+    }
+
+    .button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .dashboard     { background-color: #3f51b5; } /* Indigo */
+    .leaderboard   { background-color: #673ab7; } /* Deep purple */
+    .scanner       { background-color: #607d8b; } /* Blue grey */
+    .print         { background-color: #26a69a; } /* Teal */
+    .logout        { background-color: #e53935; margin-top: 16px; } /* Red */
+
+    /* Floating SVG icons */
+    .bg-icon {
+      position: absolute;
+      opacity: 0.04;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+    }
+
+    .bg-icon.microscope {
+      top: 10%;
+      left: 5%;
+    }
+
+    .bg-icon.dna {
+      bottom: 15%;
+      right: 5%;
+    }
+
+    .bg-icon.cell {
+      top: 20%;
+      right: 15%;
+    }
+
+    .bg-icon.vial {
+      bottom: 10%;
+      left: 10%;
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .bg-icon {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SVG Biology Icons -->
+  <img src="https://cdn-icons-png.flaticon.com/512/3239/3239951.png" class="bg-icon microscope" />
+  <img src="https://cdn-icons-png.flaticon.com/512/2936/2936844.png" class="bg-icon dna" />
+  <img src="https://cdn-icons-png.flaticon.com/512/2975/2975175.png" class="bg-icon cell" />
+  <img src="https://cdn-icons-png.flaticon.com/512/3136/3136612.png" class="bg-icon vial" />
+
+  <div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/3239/3239951.png" alt="Biology Icon">
+    <h1>Welcome, Biology Admin</h1>
+
+    <button class="button dashboard" onclick="location.href='dashboard.html'">
+      <i class="fas fa-th-large"></i> Dashboard
+    </button>
+
+    <button class="button leaderboard" onclick="location.href='leaderboard.html'">
+      <i class="fas fa-trophy"></i> Leaderboard
+    </button>
+
+    <button class="button scanner" onclick="location.href='scanner.html'">
+      <i class="fas fa-qrcode"></i> QR Scanner
+    </button>
+
+    <button class="button print" onclick="location.href='print-codes.html'">
+      <i class="fas fa-print"></i> Print QR Codes
+    </button>
+
+    <button class="button logout" onclick="location.href='login.html'">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+
+</body>
+</html>

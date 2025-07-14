@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Scanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      color: #2e7d32;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    select,
+    input[type="number"] {
+      font-size: 16px;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    #form-controls {
+      margin-bottom: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .form-group {
+      margin: 15px 0;
+    }
+
+    input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    .form-group label[for="points"],
+    .form-group label[for="className"] {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #qr-reader {
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    #popupMessage {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 25px;
+      border-radius: 8px;
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 999;
+      display: none;
+      white-space: pre-line;
+    }
+
+    body::before {
+      content: "";
+      background-image: url('https://cdn-icons-png.flaticon.com/512/1822/1822899.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/2721/2721273.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/2721/2721306.png');
+      background-repeat: no-repeat;
+      background-size: 60px;
+      background-position: 5% 10%, 90% 20%, 10% 85%;
+      opacity: 0.06;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      select, input[type="number"] {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      #form-controls {
+        padding: 15px;
+      }
+
+      #popupMessage {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🔬 QR Code Scanner</h1>
+
+  <div id="form-controls">
+    <div class="form-group">
+      <label for="className">Class:</label>
+      <select id="className">
+        <option value="Class A">Class A</option>
+        <option value="Class B">Class B</option>
+        <option value="Class C">Class C</option>
+        <option value="Class D">Class D</option>
+        <option value="Class E">Class E</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Action:</label><br>
+      <label><input type="radio" name="action" value="add" checked> Add</label>
+      <label><input type="radio" name="action" value="subtract"> Subtract</label>
+    </div>
+
+    <div class="form-group">
+      <label for="points">Points:</label>
+      <input type="number" id="points" value="1" min="1">
+    </div>
+  </div>
+
+  <div id="qr-reader"></div>
+  <div id="popupMessage"></div>
+
+  <script>
+    const POPUP_DURATION = 7000;
+    const SCAN_COOLDOWN = 4000;
+    let scanLocked = false;
+
+    function getFormData() {
+      const className = document.getElementById("className").value;
+      const action = document.querySelector('input[name="action"]:checked').value;
+      const amount = parseInt(document.getElementById("points").value);
+      return { className, action, amount };
+    }
+
+    function showPopup(message, type = 'success') {
+      const popup = document.getElementById("popupMessage");
+      popup.style.backgroundColor = type === 'error' ? "#dc3545" : "#28a745";
+      popup.innerText = message;
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", POPUP_DURATION);
+    }
+
+    function sendScan(qrData) {
+      if (scanLocked) return;
+      scanLocked = true;
+
+      const { className, action, amount } = getFormData();
+
+      fetch("http://localhost:3000/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          qrCodeData: qrData,
+          className,
+          action,
+          amount
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          showPopup("❌ " + data.error, "error");
+        } else {
+          const { student } = data;
+          const changeText = action === "add" ? `➕ ${amount}` : `➖ ${amount}`;
+          const message = `✅ ${student.name}\n${changeText} points\n🏆 Total: ${student.points}`;
+          showPopup(message, "success");
+        }
+        setTimeout(() => scanLocked = false, SCAN_COOLDOWN);
+      })
+      .catch(err => {
+        showPopup("Error: " + err, "error");
+        setTimeout(() => scanLocked = false, SCAN_COOLDOWN);
+      });
+    }
+
+    function onScanSuccess(decodedText) {
+      if (!scanLocked) {
+        sendScan(decodedText);
+      }
+    }
+
+    const html5QrCode = new Html5Qrcode("qr-reader");
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        const cameraId = devices[0].id;
+        html5QrCode.start(
+          cameraId,
+          { fps: 10, qrbox: 250 },
+          onScanSuccess
+        );
+      }
+    }).catch(err => {
+      showPopup("Camera error: " + err, "error");
+    });
+  </script>
+</body>
+</html>

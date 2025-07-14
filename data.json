@@ -1,0 +1,113 @@
+{
+  "classes": {
+    "Class A": [
+      {
+        "id": 1,
+        "name": "Alice",
+        "className": "Class A",
+        "points": 12,
+        "qrCode": "student-1"
+      },
+      {
+        "id": 2,
+        "name": "Bob",
+        "className": "Class A",
+        "points": 8,
+        "qrCode": "student-2"
+      },
+      {
+        "id": 16,
+        "name": "Linus",
+        "className": "Class A",
+        "points": 24,
+        "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKPSURBVO3BQW7kQAwEwSxC//9yro88NSBIM2sTjIg/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrl4qEkfJNKl4RO5SQJncpJEr5J5YlijVKsUYo1ysXLVN6UhBOVLgmdykkSOpUTlTcl4U3FGqVYoxRrlIsPS8IdKn9JEu5Q+aRijVKsUYo1ysUfl4STJHQqXRImKdYoxRqlWKNcDKNykoTJijVKsUYp1igXH6byPyWhU+mS8ITKb1KsUYo1SrFGuXhZEiZLwm9WrFGKNUqxRok/+MOScIfKZMUapVijFGuUi4eS0KnckYROpUvCJyXhk1ROktCpPFGsUYo1SrFGiT/4oCQ8odIl4UTljiR0Knck4Q6VTyrWKMUapVijxB98URI6lS4JJyonSThR6ZJwotIl4Q6VLgmdypuKNUqxRinWKBcPJeFNKk+odEnoknCi8oTKHUnoVJ4o1ijFGqVYo1x8mMpJEt6k0ql0SehUnlDpktCpfFOxRinWKMUaJf7gD0tCp9Il4TdR+aRijVKsUYo1ysVDSfgmlTtUuiR0Kl0SOpWTJHQqJ0noVN5UrFGKNUqxRrl4mcqbknCi0iXhROVE5SQJncodKl0SOpUnijVKsUYp1igXH5aEO1TuSMITSehU7khCp3KShE7lTcUapVijFGuUiz9OpUvCm5LQqXRJ6JJwRxI6lSeKNUqxRinWKBfDqPwmKt9UrFGKNUqxRrn4MJXfJAl3qNyh8j8Va5RijVKsUS5eloRvSkKn0iXhRKVLwh0qTyShU3miWKMUa5RijRJ/sMYo1ijFGqVYoxRrlGKNUqxRijVKsUYp1ijFGqVYoxRrlGKNUqxRijXKPwEI896VjZCFAAAAAElFTkSuQmCC"
+      }
+    ],
+    "Class B": [
+      {
+        "id": 18,
+        "name": "Johny",
+        "className": "Class B",
+        "points": 10,
+        "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAALASURBVO3BQY7cQAwEwSxC//9yeo88NSBIM17TjIg/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrl4qEkfJNKl4QTlS4JncpJEr5J5YlijVKsUYo1ysXLVN6UhBOVkyR0Kk+ovCkJbyrWKMUapVijXHxYEu5QuSMJJypdEjqVJ5Jwh8onFWuUYo1SrFEu/nEqXRK6JPxPijVKsUYp1igX/xmVLgmdyr+sWKMUa5RijXLxYSqflIRO5Q6VJ1R+k2KNUqxRijXKxcuS8JskoVPpktCpnCThNyvWKMUapVijxB8MloQTlUmKNUqxRinWKBcPJaFT6ZLQqdyRhBOVLgmdSpeELgmdykkSOpWTJHQqXRI6lSeKNUqxRinWKBcPqXRJeJNKl4QuCXeonCThRKVLwolKl4RPKtYoxRqlWKPEH3xREj5JpUtCp3JHEt6k0iWhU3miWKMUa5RijXLxl6l0SehUTpLQJaFTOUlCp9Kp3JGETqVLwicVa5RijVKsUS4+LAknSehUuiR0Kp3KEypPJKFT+ZuKNUqxRinWKBcfpvKEykkSnlC5IwknSehUvqlYoxRrlGKNcvFQEr5J5USlS8JJEjqVLgmdSpeETqVLQqfSJeFNxRqlWKMUa5SLl6m8KQknKl0SOpUuCZ3KicodSehUvqlYoxRrlGKNcvFhSbhD5QmVLgknSehU7lDpknCShE7lTcUapVijFGuUi+FUnkhCp9Il4Q6VTyrWKMUapVijXPzjknCHykkS3pSEO1SeKNYoxRqlWKNcfJjKJ6mcJOEkCZ3KSRI6lS4Jnco3FWuUYo1SrFEuXpaEb0rCicqJSpeEE5UuCU8koVN5olijFGuUYo0Sf7DGKNYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1yh9mLRAB6oAs5AAAAABJRU5ErkJggg=="
+      }
+    ],
+    "Class C": [
+      {
+        "id": 7,
+        "name": "George",
+        "className": "Class C",
+        "points": 9,
+        "qrCode": "student-7"
+      },
+      {
+        "id": 8,
+        "name": "Hannah",
+        "className": "Class C",
+        "points": 17,
+        "qrCode": "student-8"
+      },
+      {
+        "id": 9,
+        "name": "Ivan",
+        "className": "Class C",
+        "points": 30,
+        "qrCode": "student-9"
+      },
+      {
+        "id": 17,
+        "name": "House",
+        "className": "Class C",
+        "points": 12,
+        "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKlSURBVO3BQW7sWAwEwSxC979yjpdcPUCQur/NYUT8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoFw8l4ZtUTpJwonJHEr5J5YlijVKsUYo1ysXLVN6UhCdUTpLQqZyovCkJbyrWKMUapVijXHxYEu5QuSMJJ0k4UXkiCXeofFKxRinWKMUa5WI4lS4JXRI6lb+sWKMUa5RijXIxjEqXhP+TYo1SrFGKNcrFh6l8UxI6lZMkPKHymxRrlGKNUqxRLl6WhH9JpUtCp/JEEn6zYo1SrFGKNcrFQyq/SRI6lS4Jd6j8JcUapVijFGuUi4eS0Kl0SXiTSqdykoROpUvCSRLepPJJxRqlWKMUa5SLlyWhU+mS0KnckYRPSsInJeFE5YlijVKsUYo1ysVDKidJuCMJd6h0SehUuiR0Kl0SOpUuCZ3KSRJOVN5UrFGKNUqxRok/eCAJn6TSJeFE5ZOS0Kl0SXhC5YlijVKsUYo1ysXLVLokdCpdEjqVLgl3JKFT6ZLQqXRJOFG5Q+WbijVKsUYp1ijxB39YEjqVLgl3qNyRhDepPFGsUYo1SrFGiT94IAnfpPKmJJyo3JGEO1TeVKxRijVKsUa5eJnKm5JwkoQTlS4JJyonSXhCpUtCp/JEsUYp1ijFGuXiw5Jwh8oTKicqXRK6JJyodEnoVP6lYo1SrFGKNcrFMEnoVJ5Q6ZJwkoQTlU7lTcUapVijFGuUi2FUuiScqHRJ6JLQqdyRhG8q1ijFGqVYo1x8mMonqdyhcqLyRBL+pWKNUqxRijXKxcuS8E1JuCMJncqbVE6S0Km8qVijFGuUYo0Sf7DGKNYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1yn+oavvrCT/EBwAAAABJRU5ErkJggg=="
+      }
+    ],
+    "Class D": [
+      {
+        "id": 10,
+        "name": "Julia",
+        "className": "Class D",
+        "points": 20,
+        "qrCode": "student-10"
+      },
+      {
+        "id": 11,
+        "name": "Kevin",
+        "className": "Class D",
+        "points": 11,
+        "qrCode": "student-11"
+      },
+      {
+        "id": 12,
+        "name": "Laura",
+        "className": "Class D",
+        "points": 4,
+        "qrCode": "student-12"
+      }
+    ],
+    "Class E": [
+      {
+        "id": 13,
+        "name": "Mike",
+        "className": "Class E",
+        "points": 22,
+        "qrCode": "student-13"
+      },
+      {
+        "id": 14,
+        "name": "Nina",
+        "className": "Class E",
+        "points": 6,
+        "qrCode": "student-14"
+      },
+      {
+        "id": 15,
+        "name": "Oscar",
+        "className": "Class E",
+        "points": 14,
+        "qrCode": "student-15"
+      }
+    ]
+  },
+  "studentIdCounter": 19
+}

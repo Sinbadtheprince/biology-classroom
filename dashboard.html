@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom right, #e0f7fa, #f1f8e9);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+
+    #searchBox {
+      display: block;
+      margin: 0 auto 20px;
+      padding: 10px 15px;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .add-class-form {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .add-class-form input {
+      padding: 10px;
+      width: 300px;
+      max-width: 90%;
+      font-size: 14px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+    }
+
+    .add-class-form button {
+      padding: 10px 15px;
+      margin-left: 10px;
+      font-size: 14px;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .export-btn {
+      display: block;
+      margin: 10px auto 30px;
+      background: #0288d1;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .class-section {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .class-section h2 {
+      color: #388e3c;
+      margin-bottom: 5px;
+    }
+
+    .class-summary {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .student {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      background: #f5f5f5;
+      padding: 12px 16px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .student-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .student-info input {
+      font-size: 14px;
+      padding: 6px;
+      width: 150px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .student-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
+    .student-buttons button {
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .student img {
+      height: 50px;
+      margin-left: 15px;
+    }
+
+    .save-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #e53935;
+      color: white;
+    }
+
+    .add-student-form {
+      margin-top: 20px;
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .add-student-form input {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .add-student-form button {
+      background-color: #00796b;
+      color: white;
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    body::before {
+      content: "";
+      background-image: url('https://cdn-icons-png.flaticon.com/512/2721/2721273.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/1822/1822899.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/2721/2721306.png');
+      background-repeat: no-repeat;
+      background-size: 50px;
+      background-position: 5% 10%, 95% 20%, 10% 80%;
+      opacity: 0.07;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+
+    @media (max-width: 600px) {
+      .student {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .student-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .student-info input {
+        width: 100%;
+      }
+
+      .student img {
+        margin-left: 0;
+      }
+
+      .add-class-form input,
+      .add-class-form button {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+      }
+
+      .add-student-form {
+        flex-direction: column;
+      }
+
+      .add-student-form input,
+      .add-student-form button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Classroom Dashboard</h1>
+
+  <input type="text" id="searchBox" placeholder="Search student by name...">
+
+  <div class="add-class-form">
+    <input type="text" id="newClassName" placeholder="New Class Name">
+    <button onclick="addClass()">Add Class</button>
+  </div>
+
+  <button class="export-btn" onclick="exportCSV()">📁 Export All to CSV</button>
+
+  <div id="dashboard">Loading...</div>
+
+  <script>
+    const API_URL = 'http://localhost:3000';
+    let allStudents = [];
+
+    async function fetchStudents() {
+      const res = await fetch(`${API_URL}/students`);
+      const data = await res.json();
+      allStudents = data.students;
+      renderDashboard(allStudents);
+    }
+
+    function groupStudentsByClass(students) {
+      const grouped = {};
+      students.forEach(s => {
+        if (!grouped[s.className]) grouped[s.className] = [];
+        grouped[s.className].push(s);
+      });
+      return grouped;
+    }
+
+    function renderDashboard(students) {
+      const dashboard = document.getElementById('dashboard');
+      dashboard.innerHTML = '';
+
+      const grouped = groupStudentsByClass(students);
+
+      for (const className in grouped) {
+        const section = document.createElement('div');
+        section.className = 'class-section';
+
+        const header = document.createElement('h2');
+        header.textContent = className;
+        section.appendChild(header);
+
+        const summary = document.createElement('div');
+        const classPoints = grouped[className].reduce((sum, s) => sum + s.points, 0);
+        summary.className = 'class-summary';
+        summary.textContent = `Total Students: ${grouped[className].length} | Total Points: ${classPoints}`;
+        section.appendChild(summary);
+
+        grouped[className].forEach(student => {
+          section.appendChild(createStudentElement(student));
+        });
+
+        const form = document.createElement('div');
+        form.className = 'add-student-form';
+        form.innerHTML = `
+          <input type="text" placeholder="Name" id="name-${className}">
+          <input type="number" placeholder="Points" id="points-${className}">
+          <button onclick="addStudent('${className}')">Add Student</button>
+        `;
+        section.appendChild(form);
+
+        dashboard.appendChild(section);
+      }
+    }
+
+    function createStudentElement(student) {
+      const div = document.createElement('div');
+      div.className = 'student';
+
+      const info = document.createElement('div');
+      info.className = 'student-info';
+      info.innerHTML = `
+        <input type="text" value="${student.name}" data-field="name">
+        <input type="number" value="${student.points}" data-field="points">
+      `;
+
+      const qr = document.createElement('img');
+      qr.src = student.qrCode;
+
+      const buttons = document.createElement('div');
+      buttons.className = 'student-buttons';
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'save-btn';
+      saveBtn.innerHTML = '💾 Save';
+      saveBtn.onclick = () => handleSave(student.id, div);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.innerHTML = '🗑️ Delete';
+      deleteBtn.onclick = () => handleDelete(student.id, div);
+
+      buttons.appendChild(saveBtn);
+      buttons.appendChild(deleteBtn);
+
+      div.appendChild(info);
+      div.appendChild(buttons);
+      div.appendChild(qr);
+
+      return div;
+    }
+
+    async function handleSave(id, studentDiv) {
+      const name = studentDiv.querySelector('[data-field="name"]').value;
+      const points = parseInt(studentDiv.querySelector('[data-field="points"]').value);
+      const password = prompt('Enter admin password to save:');
+
+      const res = await fetch(`${API_URL}/student/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, points, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('✅ Student updated!');
+        fetchStudents();
+      } else {
+        alert('❌ ' + data.error);
+      }
+    }
+
+    async function handleDelete(id, studentDiv) {
+      if (!confirm('Delete this student?')) return;
+      const password = prompt('Admin password to delete:');
+
+      const res = await fetch(`${API_URL}/student/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('🗑️ Deleted');
+        fetchStudents();
+      } else {
+        alert('❌ ' + data.error);
+      }
+    }
+
+    async function addClass() {
+      const className = document.getElementById('newClassName').value.trim();
+      if (!className) return alert("Enter a class name!");
+      const res = await fetch(`${API_URL}/student`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: "Temp", className, points: 0 })
+      });
+      await res.json();
+      alert("Class added!");
+      fetchStudents();
+    }
+
+    async function addStudent(className) {
+      const name = document.getElementById(`name-${className}`).value;
+      const points = parseInt(document.getElementById(`points-${className}`).value);
+      if (!name || isNaN(points)) return alert("Please fill both fields.");
+      const res = await fetch(`${API_URL}/student`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, className, points })
+      });
+      await res.json();
+      alert("Student added!");
+      fetchStudents();
+    }
+
+    function exportCSV() {
+      let csv = 'ID,Name,Class,Points\n';
+      allStudents.forEach(s => {
+        csv += `${s.id},"${s.name}",${s.className},${s.points}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'students.csv';
+      a.click();
+    }
+
+    document.getElementById('searchBox').addEventListener('input', e => {
+      const keyword = e.target.value.toLowerCase();
+      const filtered = allStudents.filter(s => s.name.toLowerCase().includes(keyword));
+      renderDashboard(filtered);
+    });
+
+    fetchStudents();
+  </script>
+</body>
+</html>

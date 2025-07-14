@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      background: linear-gradient(to bottom right, #e0f7fa, #f1f8e9);
+      position: relative;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 10px;
+    }
+
+    select, button {
+      padding: 10px 15px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    select {
+      background: #ffffff;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #0288d1;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0277bd;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 40px;
+      word-break: break-word;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #66bb6a;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f1f8e9;
+    }
+
+    .rank {
+      font-weight: bold;
+    }
+
+    body::before {
+      content: "";
+      background-image: url('https://cdn-icons-png.flaticon.com/512/2721/2721273.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/1822/1822899.png'),
+                        url('https://cdn-icons-png.flaticon.com/512/2721/2721306.png');
+      background-repeat: no-repeat;
+      background-size: 60px;
+      background-position: 5% 10%, 95% 25%, 10% 80%;
+      opacity: 0.07;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+
+    @media (max-width: 600px) {
+      h1, h2 {
+        font-size: 20px;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      select, button {
+        width: 100%;
+        font-size: 16px;
+      }
+
+      table {
+        font-size: 13px;
+      }
+
+      th, td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌱 Biology Class Leaderboard</h1>
+
+  <div class="controls">
+    <div>
+      <label for="classFilter"><strong>Filter by Class:</strong></label>
+      <select id="classFilter" onchange="updateLeaderboard()">
+        <option value="all">All Classes</option>
+      </select>
+    </div>
+    <div>
+      <button onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+      <button onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
+    </div>
+  </div>
+
+  <h2>🏅 Top Students</h2>
+  <table id="leaderboard">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>🏆 Class Rankings</h2>
+  <table id="classRanks">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Class</th>
+        <th>Total Points</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let allStudents = [];
+
+    async function loadStudents() {
+      try {
+        const res = await fetch("http://localhost:3000/students");
+        const data = await res.json();
+        allStudents = data.students;
+
+        const classSet = new Set(allStudents.map(s => s.className));
+        const select = document.getElementById("classFilter");
+        select.innerHTML = '<option value="all">All Classes</option>';
+        classSet.forEach(className => {
+          const option = document.createElement("option");
+          option.value = className;
+          option.textContent = className;
+          select.appendChild(option);
+        });
+
+        updateLeaderboard();
+        updateClassRanks();
+      } catch (err) {
+        alert("Failed to load leaderboard");
+        console.error(err);
+      }
+    }
+
+    function updateLeaderboard() {
+      const classFilter = document.getElementById("classFilter").value;
+      let filtered = allStudents;
+
+      if (classFilter !== "all") {
+        filtered = allStudents.filter(s => s.className === classFilter);
+      }
+
+      filtered.sort((a, b) => b.points - a.points);
+
+      const tbody = document.querySelector("#leaderboard tbody");
+      tbody.innerHTML = "";
+
+      filtered.forEach((student, index) => {
+        const row = document.createElement("tr");
+        let rankDisplay = index + 1;
+        if (index === 0) rankDisplay = "🥇";
+        else if (index === 1) rankDisplay = "🥈";
+        else if (index === 2) rankDisplay = "🥉";
+
+        row.innerHTML = `
+          <td class="rank">${rankDisplay}</td>
+          <td>${student.name}</td>
+          <td>${student.className}</td>
+          <td>${student.points}</td>
+        `;
+
+        row.onclick = () => editPoints(student);
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateClassRanks() {
+      const classTotals = {};
+      allStudents.forEach(s => {
+        if (!classTotals[s.className]) classTotals[s.className] = 0;
+        classTotals[s.className] += s.points;
+      });
+
+      const sorted = Object.entries(classTotals).sort((a, b) => b[1] - a[1]);
+      const tbody = document.querySelector("#classRanks tbody");
+      tbody.innerHTML = "";
+
+      sorted.forEach(([className, total], index) => {
+        const tr = document.createElement("tr");
+        const trophy = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+        tr.innerHTML = `
+          <td>${index + 1} ${trophy}</td>
+          <td>${className}</td>
+          <td>${total}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function editPoints(student) {
+      const newPoints = prompt(`Edit points for ${student.name}:`, student.points);
+      if (newPoints === null) return;
+      const amount = parseInt(newPoints);
+      if (isNaN(amount)) return alert("Invalid number");
+
+      fetch("http://localhost:3000/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          qrCodeData: `student-${student.id}`,
+          className: student.className,
+          action: "set",
+          amount
+        })
+      })
+        .then(res => res.json())
+        .then(() => {
+          alert("Points updated!");
+          loadStudents();
+        })
+        .catch(err => {
+          alert("Error updating points");
+          console.error(err);
+        });
+    }
+
+    function exportCSV() {
+      const rows = [["Rank", "Name", "Class", "Points"]];
+      const classFilter = document.getElementById("classFilter").value;
+      let filtered = allStudents;
+      if (classFilter !== "all") filtered = allStudents.filter(s => s.className === classFilter);
+      filtered.sort((a, b) => b.points - a.points);
+
+      filtered.forEach((s, i) => {
+        const rank = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
+        rows.push([rank, s.name, s.className, s.points]);
+      });
+
+      const csvContent = rows.map(r => r.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "leaderboard.csv";
+      link.click();
+    }
+
+    async function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text("Student Leaderboard", 14, 20);
+
+      let y = 30;
+      doc.setFontSize(12);
+      doc.text("#   Name   Class   Points", 14, y);
+      y += 10;
+
+      const classFilter = document.getElementById("classFilter").value;
+      let filtered = allStudents;
+      if (classFilter !== "all") filtered = allStudents.filter(s => s.className === classFilter);
+      filtered.sort((a, b) => b.points - a.points);
+
+      filtered.forEach((s, i) => {
+        const rank = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
+        doc.text(`${rank}   ${s.name}   ${s.className}   ${s.points}`, 14, y);
+        y += 8;
+        if (y > 280) {
+          doc.addPage();
+          y = 20;
+        }
+      });
+
+      doc.save("leaderboard.pdf");
+    }
+
+    loadStudents();
+  </script>
+</body>
+</html>
