@@ -7,10 +7,7 @@
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       padding: 20px;
@@ -19,19 +16,13 @@
       text-align: center;
       position: relative;
     }
-
     h1 {
       color: #2e7d32;
       margin-bottom: 30px;
       font-size: 24px;
     }
-
-    label {
-      font-weight: 600;
-    }
-
-    select,
-    input[type="number"] {
+    label { font-weight: 600; }
+    select, input[type="number"] {
       font-size: 16px;
       padding: 10px;
       margin-top: 6px;
@@ -41,7 +32,6 @@
       width: 100%;
       max-width: 280px;
     }
-
     #form-controls {
       margin-bottom: 30px;
       background: white;
@@ -52,21 +42,13 @@
       margin-left: auto;
       margin-right: auto;
     }
-
-    .form-group {
-      margin: 15px 0;
-    }
-
-    input[type="radio"] {
-      margin-right: 5px;
-    }
-
+    .form-group { margin: 15px 0; }
+    input[type="radio"] { margin-right: 5px; }
     .form-group label[for="points"],
     .form-group label[for="className"] {
       display: block;
       margin-bottom: 5px;
     }
-
     #qr-reader {
       width: 100%;
       max-width: 340px;
@@ -75,7 +57,6 @@
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-
     #popupMessage {
       position: fixed;
       bottom: 20px;
@@ -91,7 +72,6 @@
       display: none;
       white-space: pre-line;
     }
-
     body::before {
       content: "";
       background-image: url('https://cdn-icons-png.flaticon.com/512/1822/1822899.png'),
@@ -105,21 +85,13 @@
       inset: 0;
       z-index: -1;
     }
-
     @media (max-width: 500px) {
-      h1 {
-        font-size: 20px;
-      }
-
+      h1 { font-size: 20px; }
       select, input[type="number"] {
         font-size: 14px;
         padding: 8px;
       }
-
-      #form-controls {
-        padding: 15px;
-      }
-
+      #form-controls { padding: 15px; }
       #popupMessage {
         font-size: 14px;
         padding: 10px 20px;
@@ -218,11 +190,16 @@
     }
 
     const html5QrCode = new Html5Qrcode("qr-reader");
+
     Html5Qrcode.getCameras().then(devices => {
       if (devices && devices.length) {
-        const cameraId = devices[0].id;
+        // Try to find the back camera first
+        const backCam = devices.find(device =>
+          device.label.toLowerCase().includes("back")
+        ) || devices[0]; // fallback to first available
+
         html5QrCode.start(
-          cameraId,
+          backCam.id,
           { fps: 10, qrbox: 250 },
           onScanSuccess
         );
