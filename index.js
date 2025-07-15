@@ -3,24 +3,44 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+
 const app = express();
-const PORT = 3000;
-
+const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
-const ADMIN_PASSWORD = 'admin123'; // You can change this later
+const ADMIN_PASSWORD = 'admin123'; // Change later for security
 
-let rawData = fs.readFileSync(DATA_FILE);
-let { classes, studentIdCounter } = JSON.parse(rawData);
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); // Serve HTML files
 
+// Load or create data.json
+let classes = {};
+let studentIdCounter = 1;
+
+try {
+  if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify({ classes: {}, studentIdCounter: 1 }, null, 2));
+  }
+  const rawData = fs.readFileSync(DATA_FILE);
+  const parsed = JSON.parse(rawData);
+  classes = parsed.classes || {};
+  studentIdCounter = parsed.studentIdCounter || 1;
+} catch (err) {
+  console.error("❌ Failed to load data.json:", err);
+}
+
+// Helper: Save data
 function saveData() {
   const data = { classes, studentIdCounter };
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-app.use(cors());
-app.use(express.json());
+//
+// 🔧 API ROUTES
+//
 
-// Create a class
+// Create class
 app.post('/class', (req, res) => {
   const { className } = req.body;
   if (!className) return res.status(400).json({ error: 'className is required' });
@@ -104,11 +124,7 @@ app.get('/students', (req, res) => {
   res.json({ students: allStudents });
 });
 
-app.get('/', (req, res) => {
-  res.send('Classroom Tracker Backend is running.');
-});
-
-// QR scan
+// Handle QR scan
 app.post('/scan', (req, res) => {
   const { qrCodeData, action, className, amount } = req.body;
 
@@ -135,6 +151,12 @@ app.post('/scan', (req, res) => {
   res.json({ message: `Points ${action}ed`, student });
 });
 
+// Basic test route
+app.get('/', (req, res) => {
+  res.send('🎉 Classroom Tracker backend is running!');
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
